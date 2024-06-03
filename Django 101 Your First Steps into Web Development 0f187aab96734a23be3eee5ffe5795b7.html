@@ -1,0 +1,792 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><link rel="shortcut icon" href="django.png" type="image/x-icon" /><title>Django 101: Your First Steps into Web Development</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #1E1E1E;
+    color: #FFFFFF;
+
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	color: #FFFFFF;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	color: #DDDDDD;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(50, 50, 50, 0.9);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+pre {
+    position: relative;
+    background-color: #2D2D2D;
+    color: #FFFFFF;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	color: #DDDDDD;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.download-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px 0;
+            font-size: 16px;
+            color: #FFFFFF;
+            background-color: #946832;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .download-button:hover {
+            background-color: #FFA500;
+        }
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="0f187aab-9673-4a23-be3e-ee5ffe5795b7" class="page sans"><header><h1 class="page-title">Django 101: Your First Steps into Web Development</h1><p class="page-description"></p></header><div class="page-body"><p id="2760c669-013c-4bb1-9e94-9bb4f76678fc" class="">
+</p><ul id="85667612-3659-4285-b224-2e263f62323f" class="toggle"><li><details open=""><summary><mark class="highlight-orange"><strong>What is Django?</strong></mark></summary><p id="61dd0782-64a4-4afb-a970-f331280f4358" class="">Django is a web application framework written in Python programming language. It is based on MVT (Model View Template) design pattern. The Django is very demanding due to its rapid development feature. It takes less time to build application after collecting client requirement.</p></details></li></ul><ul id="34b7de30-1f77-49ef-852a-1c499defbc39" class="toggle"><li><details open=""><summary><mark class="highlight-orange"><strong>How Django Works?</strong></mark></summary><p id="992ed64a-3a4b-4211-a7d9-91a2f5a0a8a0" class="">The MVT (Model View Template) is a software design pattern. It is a collection of three important components Model View and Template. The Model helps to handle database. It is a data access layer which handles the data.</p><p id="f4acdbf2-30cb-45a9-a66a-487f9ef054cf" class="">The Template is a presentation layer which handles User Interface part completely. The View is used to execute the business logic and interact with a model to carry data and renders a template.</p><p id="65b41183-8d27-4836-b524-6d5c397b6dfe" class="">Although Django follows MVC pattern but maintains it?s own conventions. So, control is handled by the framework itself.</p><p id="e0dbd6a9-2b2a-4d0c-b945-3cae8727c3e6" class="">There is no separate controller and complete application is based on Model View and Template. That's why it is called MVT application.</p><p id="9bab03b3-9461-4620-aa09-c5c3ff2065a6" class="">
+</p><figure id="644ce696-2008-4ef1-9ee2-166c56370539" class="image"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Untitled-2024-06-02-2358.png"><img style="width:907px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Untitled-2024-06-02-2358.png"/></a></figure><p id="a434baf1-ba3e-4139-9ba1-0aa64a58b75e" class="">That’s how Django works !!!</p><p id="5a477509-ca86-498e-90a6-c4b28809c710" class=""> <p>Download the PDF guide to learn more about Django:</p><a href="learn-django-101.pdf" class="download-button" download>Download PDF</a>
+</p></details></li></ul><h2 id="c1cbd84c-57cf-4156-8f92-c6ecee4579f0" class=""><mark class="highlight-yellow">Django Installation Step by Step </mark></h2><p id="a652aa0c-f8f3-49d1-bd15-490c730f696a" class="">It is suggested to have a dedicated virtual environment for each Django project.For the installation step first we have to create a folder in our PC/Laptop. You can give any name for your folder.</p><p id="e6c8b01d-3f36-483c-b7b4-86734fe6c217" class="">Here we are using folder name : <strong>Django101</strong></p><figure id="88ccdba3-ba01-42ab-9dcc-d93402e859ae" class="image" style="text-align:left"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_353.png"><img style="width:240px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_353.png"/></a></figure><p id="ba5e1ca4-8679-4f3a-b599-d1c6bde1c74f" class="">Then we will go to the path of the folder:</p><figure id="f708c705-e89b-4cb0-a9ee-6d0b298f3372" class="image" style="text-align:left"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_354.png"><img style="width:317px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_354.png"/></a></figure><p id="a120d72c-1ea0-4140-b573-c2c98d4eeadc" class="">Here we will type “<strong>cmd</strong>” &amp; it will open up terminal of your PC</p><p id="986879d4-5222-43da-8464-eaaf30b21b1b" class="">
+</p><p id="772946c0-16e1-405d-9f7f-d5d5fbcc3d8e" class="">In the terminal First we have to create a Virtual Environment.I am giving you the command step by step:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="8941c2fb-67b6-4cae-92f7-e6824f13faae" class="code"><code class="language-PowerShell">py -m venv myapp</code></pre><p id="88c83e51-cdc1-41dc-9b5f-3389cd352bdf" class="">
+</p><p id="8ebffaed-68ea-4ac2-bf03-7139c71b7f31" class="">After run this command you will see a folder in your <strong>Django101</strong> file named <strong>myapp</strong></p><figure id="0c26e35e-7ae3-4255-93b0-c99efa6b2b89" class="image" style="text-align:left"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_356.png"><img style="width:576px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_356.png"/></a></figure><p id="e20e5b47-02ac-44e0-9002-3e1d15700c53" class="">
+</p><p id="b6cebb78-ea2e-43f1-a88f-e652bf53cf32" class="">Then you have to run a command:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1432106f-1084-4930-bb74-0e8b64a52315" class="code"><code class="language-PowerShell">myapp\Scripts\activate</code></pre><p id="463ba2f7-e781-4da8-82b0-6eb073767e26" class="">
+</p><p id="c44c6492-7a38-4cfd-bdc1-c6b7678b072d" class="">After running this command you will see this name in front of your directory like this: </p><figure id="13c6ab02-6347-4450-8c65-77b29744e087" class="image" style="text-align:left"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_357.png"><img style="width:495px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_357.png"/></a></figure><p id="2f139b6f-eb35-4d69-8540-bff262e92e7d" class="">
+</p><p id="d27ceb00-637d-4457-adbe-50d9fb87f9a9" class="">This means your Virtual Environment is activated now. You can start installing django now.</p><p id="c0587bc6-caa5-4604-8ab2-70f3a11542e2" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="2e704ed3-c03f-4f54-94f2-1fdeb13df2cb"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><mark class="highlight-teal">If you are using </mark><mark class="highlight-teal"><strong>PyCharm </strong></mark><mark class="highlight-teal">Latest version you may don’t need to do this steps of creating a virtual environment. Because in pycharm it gives </mark><mark class="highlight-teal"><strong>Virtual Environment by default. Now</strong></mark><mark class="highlight-teal"> you just follow further steps.</mark></div></figure><h2 id="042f6a95-af1f-42ae-a65d-0d71478d00ff" class=""><mark class="highlight-yellow">Install Django:</mark></h2><p id="74d8e490-86cf-4a5e-9ab5-f146e94038d2" class="">Django is installed using pip, with this command:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="ca3184ff-eb11-4027-a872-7c6e710d806e" class="code"><code class="language-PowerShell">py -m pip install Django</code></pre><p id="f54f5257-95bb-4f0a-8db2-670d5d43d58a" class="">
+</p><p id="34f9b9bb-9a8f-469a-8281-2a5b51b9d1ca" class="">After installing it successfully then it will look something like this in your terminal:</p><figure id="54d64126-5159-486a-a074-61d7c7b78a94" class="image"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_358.png"><img style="width:963px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_358.png"/></a></figure><p id="33e41172-effb-4657-8e40-f063fa96d228" class="">
+</p><p id="2417c65b-fc10-4197-a6ef-1395c336fa84" class="">After installing Django successfully We will <strong>Create Project</strong> now:</p><p>You must need to add a dot after the project name like I give it to below</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="5a951d94-8aa4-4c0a-99f7-0c9e0ba06ae3" class="code"><code class="language-PowerShell">django-admin startproject helloworld .</code></pre><p id="efbe5eac-fa2a-410f-9bf8-fc7461af9e58" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="8542bf41-9da1-4a97-a7b8-590dda4c3499"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><mark class="highlight-yellow_background">After run this command it will create a django project with a </mark><mark class="highlight-yellow_background"><strong>manage.py</strong></mark><mark class="highlight-yellow_background"> file.This is the most important file for us.Because everything we have to do here we need this file &amp; commands.</mark></div></figure><p id="6daafaf2-e1b8-4d0b-b404-7e8360815f65" class="">
+</p><figure id="f4a3ae9b-b872-41cc-82b3-6cc6960ca9de" class="image"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_359.png"><img style="width:657px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_359.png"/></a></figure><p id="31ca10e0-ea9f-4930-a231-e826d6af0399" class="">
+</p><p id="6dbdc0a4-f8c8-42a6-9acd-723ce97cfb9d" class="">The arrow marked file is our project which we created just now.We can open it now in VS Code or PyCharm Community Editon.</p><p id="3dec5243-e39a-48e8-8306-39dfbf1f7ad6" class="">
+</p><p id="92ac5cc0-5fff-4ee3-88d1-ba70bd384b42" class="">If we open the files there will be this py files:</p><figure id="759a6c81-c23b-4465-b142-c45c071f4f99" class="image"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_361.png"><img style="width:435px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_361.png"/></a></figure><p id="23fcb9f1-d28a-467d-8b59-a55b932da93c" class="">
+</p><p id="b99f2889-b673-4ec0-9619-e620a1a07d51" class="">Now that you have a Django project, you can run it, and see what it looks like in a browser. To run this we have to execute a command in our terminal:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="b0015994-1460-44fb-a25c-2ba01ab1c100" class="code"><code class="language-PowerShell">py manage.py runserver</code></pre><p id="6c6b137f-7313-4a20-b906-ad0b08b0e467" class="">
+</p><p id="14713d31-9b2a-4494-80f6-d9bf559d45fb" class="">Then it wil show this:</p><figure id="66f87876-366c-4b8c-a685-a93dcc7b42db" class="image"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_360.png"><img style="width:1256px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_360.png"/></a></figure><p id="9cc21e4b-fbcf-4922-b090-bd6e320cc3b9" class="">
+</p><p id="98823236-02ef-4d5c-9748-bb8fed0e29ef" class="">Open a new browser window and type <mark class="highlight-gray_background"><code><strong><a href="http://127.0.0.1:8000/">127.0.0.1:8000</a></strong></code></mark>  in the address bar.Then you can see your website is running successfully:</p><p id="0dd94853-0e5a-46ed-8e53-42a4e7359314" class="">
+</p><figure id="7ad73f9b-aa95-47d9-aace-2d164d698455" class="image"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_362.png"><img style="width:1350px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_362.png"/></a></figure><p id="fd6d72da-7cd1-47c1-bbb9-d397bfde5634" class="">
+</p><h3 id="820b8e87-5d1d-4b06-a458-f1223a08536e" class=""><mark class="highlight-yellow">After creating project now we have to </mark><mark class="highlight-yellow"><strong>create app now:</strong></mark></h3><p id="97149166-9064-4ed9-ae7b-b0cfe6d85829" class="">
+</p><p id="354c4bb5-e88f-45cc-a03d-411005e08dbe" class="">I will name my app <strong>student</strong>. So we need a execute another command now for this but If the server is still running, and you are not able to write commands in terminal then, press [CTRL] [BREAK], or [CTRL] [C] to stop the server and you should be back in the virtual environment/Terminal.Then execute this command:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="c9d1ac83-aa5b-40a4-a787-beb16eaaa115" class="code"><code class="language-PowerShell">py manage.py startapp student</code></pre><p id="39a16c15-1465-4799-8f22-485d808a2fb4" class="">After execute this command there will be anoter folder/directory will shown up.Then the file structure will look like this:</p><figure id="4f610539-1a57-4338-a2e5-90fa5cc812f9" class="image"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_364.png"><img style="width:446px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_364.png"/></a></figure><p id="ff0933fe-4f2f-41be-93b6-b4b2651fc1b0" class="">In the app we will write our all logic &amp; databases.We will discuss about it further.</p><h2 id="2f5a68e2-5955-4a2f-8679-32341f719fba" class=""><mark class="highlight-yellow">Then we have to register this new app in our main project:</mark></h2><p id="6af9baee-66f2-44d5-a164-4173593f2e32" class="">
+</p><p id="cc6ce42f-665f-414d-97bb-2883fea48b5e" class="">In your project directory ( here is <strong>helloworld</strong> ), Open the <code>settings.py </code>  then scroll down &amp; you will see  <code>INSTALLED_APPS</code> option then there add your apps name into a quotation like this:</p><figure id="b03da82e-73d0-42ae-80df-1ecbcc7521dc" class="image" style="text-align:left"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_366.png"><img style="width:325px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_366.png"/></a></figure><p id="b6c735aa-5576-4f45-9641-ed872af95043" class="">Your app is installed on your project Now !!!!! </p><h2 id="233c0edd-9274-4050-b1a4-7089f7eaecb6" class=""><mark class="highlight-yellow">Now We will create template:</mark></h2><p id="1731e4cb-4da9-445d-94a1-43d1f1925935" class="">In the django we will see the webpage in HTML. So it should be created in a template folder so let’s do that.</p><p id="590a445c-5045-47fa-ab89-7c640ad02146" class="">Create templates folder in your root/main directory &amp; create a html file named “home.html”</p><figure id="9686c033-b740-45d3-b820-41bfd4998d0e" class="image"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_367.png"><img style="width:451px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_367.png"/></a></figure><p id="95f7c630-fb32-4ea8-91ed-849ca4e7d387" class="">Like this you can a make a folder &amp; inside folder you can write any html file name you want.</p><p id="dd817d5f-c9ac-4821-9dc2-294d71421373" class="">Now we have to register our templates into our <code>settings.py</code> again. So you have to go your projects <code>settings.py</code>  then scroll down you can see the <code>TEMPLATES</code> option.There you have to configure your templates. Add this here <code>&#x27;DIRS&#x27;: [&#x27;templates&#x27;],</code> </p><figure id="7d3d3c90-9324-4365-b2f4-7ebe9941e220" class="image"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_368.png"><img style="width:618px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_368.png"/></a></figure><p id="bec4e430-4d63-460c-a597-f793aead465a" class="">You are all set to go now!!!!!!!!!</p><p id="32d70c65-354a-4982-ba5f-cecb77beb0ec" class="">
+</p><h2 id="a73e4e90-21a4-445b-b537-77988d4b35e4" class=""><mark class="highlight-yellow"><strong>Creating our first views</strong></mark></h2><p id="42f40baa-42a8-4ef2-a96a-d7e11e6ea43e" class="">Go to your app file/directory then you will see a file named <code>views.py</code> .We will define functions here. This file handles all of the logics &amp; render all templates in our project. Views are Python functions that takes http requests and returns http response, like HTML documents. It will look like this when we opens:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="8eb4f8ea-3575-44e6-bcf5-af44e6c03f1d" class="code"><code class="language-Python">from django.shortcuts import render 
+
+# Create your views here.</code></pre><p id="40c36f1a-2caf-4295-80ce-a7e6e174a905" class="">
+</p><p id="33e649cd-f38a-446f-a69b-0ed094643876" class="">So first we have to define our functions here &amp; work on that .</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="dd67045a-9f87-49ae-846e-3d16b63665e1" class="code"><code class="language-Python">from django.shortcuts import render
+
+# Create your views here.
+def home(request):
+    return render(request, &#x27;home.html&#x27;)</code></pre><p id="0ea81073-f9a9-45ae-92ab-829c54c9d845" class="">This is a simple example on how to show your html in your browser. Now we can write anything in our <code>home.html</code> file we created in <code>templates</code> </p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="a9690b83-ad78-4bff-bd91-bb172b6ff4df" class="code"><code class="language-HTML">&lt;!--home.html--&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Home&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+ &lt;h1&gt;Welcome to your first django App&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="778bc662-f6c5-4bb8-8b79-1fda4f80ec80" class="">Now we have to go our URLS to give a path that we can see this in our browser.</p><p id="83b24147-426d-4c39-bb80-247420a445f8" class="">
+</p><h2 id="8eaa42b8-71ac-45a7-b647-cc7f3ae90f66" class=""><mark class="highlight-yellow"><strong>Creating our first URLS &amp; Run the server:</strong></mark></h2><p id="bd6313a5-d0df-406a-877a-ed398d4a574e" class="">
+</p><p id="e85821f7-17fe-4405-bf8e-917a19bf6396" class="">In our project directory/file ( here is helloworld ), we can see a file named <code>urls.py</code> . </p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1c519e69-4cb1-4ef0-8bbb-6c168a9f55f4" class="code"><code class="language-Python">from django.contrib import admin
+from django.urls import path
+
+
+urlpatterns = [
+    path(&#x27;admin/&#x27;, admin.site.urls),
+]
+</code></pre><p id="4c3f7cca-6180-484a-945b-693d4ea461bd" class="">We have to go there &amp; import our views &amp; functions :</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="ed051ac8-0b0b-442d-8058-5b727c516de0" class="code"><code class="language-Python">from django.contrib import admin
+from django.urls import path
+from student.views import * #we imported this.here student is our app name
+
+urlpatterns = [
+    path(&#x27;admin/&#x27;, admin.site.urls),
+]
+</code></pre><p id="5e51527b-52ce-4689-b621-19bce0975f0f" class="">We imported this <code>from student.views import *</code> here from the student app we imported the views &amp; for the views function we use * that we can get all the function in our <code>views.py</code>  . You can call the function name also. Like <code>from student.views import home</code> this .But the problem is you have to add every function you write in your views .So better approach is <code>from student.views import *</code> adding this.</p><p id="ef9adff5-3a6f-43f2-8ceb-7ee22e0c2295" class="">
+</p><p id="b5a57f7f-8c59-4b0f-8f0a-db1b4025a54d" class="">So after that we have to define our urls :</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="5e1259c5-a6c1-4b8c-b944-54a9aee326a6" class="code"><code class="language-Python">from django.contrib import admin
+from django.urls import path
+from student.views import *
+
+urlpatterns = [
+    path(&#x27;&#x27;, home, name=&quot;home&quot;), # we defined this
+    path(&#x27;admin/&#x27;, admin.site.urls),
+]</code></pre><p id="9326a54a-9941-4d75-9800-3b87b200a1ba" class="">here it is the first page so we make the path empty <code>&#x27;&#x27;</code>  &amp; give the urls a name. You will do the same with your every URL. But remember that only the first URL will be empty ( the page you want to show first ) . for other urls you will adding like this :</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="4ff89d12-d128-445a-926a-4c9786da6d89" class="code"><code class="language-Python">from django.contrib import admin
+from django.urls import path
+from student.views import *
+
+urlpatterns = [
+    path(&#x27;&#x27;, home, name=&quot;home&quot;),
+    path(&#x27;about/&#x27;, about, name=&#x27;about&#x27;), # rest of the function you make you will add like this
+    path(&#x27;admin/&#x27;, admin.site.urls),
+]</code></pre><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="9cd5cd18-0ef5-4376-bf2c-745e9f6e4346"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><mark class="highlight-brown_background"><code>path(&#x27;about/&#x27;, about, name=&#x27;about&#x27;),</code></mark><mark class="highlight-brown_background">  we don’t have this function till now. I am just added this to give you an idea about it.</mark></div></figure><p id="952363d2-1b5b-49a5-b155-1e6d358eaf8e" class="">So here’s the URL adding done. </p><p id="029af032-cbac-4dd4-8482-6500f8174bd4" class="">Before run our server we have to do migration ( we all talk about it later ) to remove this warning in our terminal:</p><figure id="4c9c5888-f070-4e21-a8df-835edea364f0" class="image"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_375.png"><img style="width:1267px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_375.png"/></a></figure><p id="ac2bcd4e-be55-408e-a112-c03d64304ce6" class="">what we have to run it’s already write it which is :</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="df2041e3-0e44-4888-b6a3-91b13e1d6fe0" class="code"><code class="language-Python">py manage.py migrate</code></pre><p id="a03b6fa4-a586-499a-a99c-d72558cb87f3" class="">After executing this command it will something like this in your terminal:</p><figure id="1686d82f-84cf-48e8-80d8-fa87513e57e0" class="image"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_376.png"><img style="width:530px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_376.png"/></a></figure><p id="b656f136-18b3-434c-b609-ea89e1eb315b" class="">That means your migration is successfully completed.</p><p id="48b003d8-5d20-429b-a3d4-c08394bc3362" class="">
+</p><p id="285191a6-3c11-4e95-a0ed-df463b1af19e" class="">Now we have to run our server from the terminal using :</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="08674ac2-0254-4f80-9378-ba643fae2f74" class="code"><code class="language-Python">py manage.py runserver</code></pre><p id="a2df3b1f-b35b-40cb-96fb-3f369f15841c" class="">
+</p><p id="89a1664d-b2a9-436d-bfea-a5cc91e6677e" class=""> After run this command you can see there is no warning :</p><figure id="d04e1389-2747-488b-adce-43259218a5ba" class="image" style="text-align:left"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_377.png"><img style="width:563px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_377.png"/></a></figure><p id="dd79d6a2-591c-4849-a6db-8ca6217a144f" class="">
+</p><p id="2a94cc1c-169b-496e-8964-5d8a7c071c12" class="">Now go to the link <code><strong><a href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a></strong></code>  &amp; you will see your html :</p><p id="cc3a19d4-86f1-4ac2-9fe6-956df5dd15c9" class="">
+</p><figure id="fe14d967-ae03-45fe-b359-0caac6d18398" class="image"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_378.png"><img style="width:708px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Screenshot_378.png"/></a></figure><p id="4cb58521-02fd-46df-a027-bd75edcde7db" class="">
+</p><p id="3350bb43-ab5f-40f4-ac49-b5f13292630b" class="">Congratulations !!!!! Your first web page is ready !!!! You can customize it or you can write anything you want in your html.After writing, you just came back to your browser &amp; refresh it you will see the changes you made in your html.</p><p id="d1ae9d44-2c6d-40ca-8173-b815b7277293" class="">
+</p><p id="1f9dac8f-5d76-44bc-9c58-723d1ff538f8" class="">If I summarize or simplified it for you the steps are like this:</p><figure id="4b7add14-f770-4f2e-b733-45b51c0ff03e" class="image"><a href="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Untitled-2024-06-02-2358%201.png"><img style="width:708px" src="Django%20101%20Your%20First%20Steps%20into%20Web%20Development%200f187aab96734a23be3eee5ffe5795b7/Untitled-2024-06-02-2358%201.png"/></a></figure><p id="74a7ed53-e94a-454d-b4b4-d5fb4efce154" class="">That’s how it works!!!!</p><p id="1bb22a7d-c2c8-43dc-a0d3-87d10201e91e" class="">
+</p><p id="7ab69d24-d6fc-49d4-af8b-fc75bb632362" class="">You can take References from here also: </p><figure id="2f7350c7-d4e4-4cdf-899c-6ac5d062e3fd"><a href="https://www.w3schools.com/django/django_getstarted.php" class="block-color-purple_background bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Django Getting Started</div><div class="bookmark-description">W3Schools offers free online tutorials, references and exercises in all the major languages of the web. Covering popular subjects like HTML, CSS, JavaScript, Python, SQL, Java, and many, many more.</div></div><div class="bookmark-href"><img src="https://www.w3schools.com/apple-touch-icon.png" class="icon bookmark-icon"/>https://www.w3schools.com/django/django_getstarted.php</div></div><img src="https://www.w3schools.com/images/w3schools_logo_436_2.png" class="bookmark-image"/></a></figure><p id="f896e6a7-c1f2-4ec6-b01e-541b10737201" class="">
+</p><p id="6bd30f98-3804-424e-9636-50314f24fd2e" class="">You can go also through this video demonstration provided by <strong>Nuzhat Tabassum Progga</strong> mam :</p><figure id="54a7fb26-4c48-4395-a943-9471a47ef038"><div style="padding: 12px; border-radius: 30px; text-decoration: none; color: #ddd;"><a href="https://drive.google.com/drive/folders/1U9A-EFTZaWTZ3Kwg5_D3wuzjiTzDSxhN?usp=sharing" target="_blank" style="background-color: rgb(68, 78, 88); padding: 10px; border-radius: 20px;">Django Tutorial</a></div></figure><p id="107a0e02-b299-4d37-8615-2db95684f8f8" class="">
+</p><blockquote id="a97b640e-8a11-4526-aacf-c5ac5f144a33" class=""><em>Written by</em><strong>: YEAKIN IQRA</strong></blockquote><p id="dcfea015-5865-4e43-ba30-c994ff0ea3c1" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
